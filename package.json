@@ -1,0 +1,25 @@
+{
+  "name": "Monitoramento_de_Impressoras",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/CarlosZanao/Monitoramento_de_Impressoras.git",
+  "author": "CarlosZanao <carloszanao@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "8.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "puppeteer": "^5.5.0",
+    "webpack": "5.0.0-rc.3",
+    "webpack-cli": "3.3.12",
+    "webpack-dev-server": "3.11.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "webpack-dev-server --mode=development",
+    "babel": "babel ./src/main.js -o ./public/bundle.js -w"
+  }
+}
