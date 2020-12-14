@@ -1,0 +1,13 @@
+{
+  "name": "API_Monitoramento_de_impressoras",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Carlos Zanão",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^5.5.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
