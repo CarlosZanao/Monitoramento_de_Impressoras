@@ -1,84 +1,12 @@
+import m404Promise from '/src/m404.js'
+import c911Promise from '/src/c911.js'
+import c3010Promise from '/src/c3010.js'
 
 var api = "192.168.26.192:3000"
-var impressoras = [{"id":"0","modelo":"C3010","ip":"192.168.31.122"},{"id":"1","modelo":"C3010","ip":"192.168.31.187"},{"id":"2","modelo":"C3010","ip":"192.168.31.158"},{"id":"3","modelo":"C911","ip":"192.168.31.118"},{"id":"4","modelo":"E57540","ip":"192.168.31.121"}]
+var impressoras = [{"id":"0","modelo":"C3010","ip":"192.168.31.122"},{"id":"1","modelo":"C3010","ip":"192.168.31.187"},{"id":"2","modelo":"C3010","ip":"192.168.31.158"},{"id":"3","modelo":"C911","ip":"192.168.31.118"},{"id":"4","modelo":"M404","ip":"192.168.31.125"}]
 var molelos = ['C3010','C911'];
 var cardsElement = document.getElementById('cards');
 var visivel = false
-
-var c911Promise = function(ip,api){
-	return new Promise(function(resolve, reject){
-		var c911 = {}
-		var url = "http://"+api+"/"+ip+"/status.htm";//Sua URL
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", url);
-		xhttp.send(null);
-		xhttp.onreadystatechange = function() {
-			if (this.readyState === 4 && this.status === 200) {
-				// Typical action to be performed when the document is ready:
-				var html = xhttp.responseText;
-				var filtro = html.match(/width="180">.*/g)
-				var local = filtro[2].replace(/width="180">/,"")
-				local = local.replace(/<\/td>/,"")
-				var nome = filtro[0].replace(/width="180">/,"")
-				nome = nome.replace(/<\/td>/,"")
-				
-				var toners = html.match(/<font id="smsz">\d\d/g)
-				
-				for (let index = 0; index < 4; index++) {
-					toners[index] = toners[index].match(/\d\d/g)	
-				}
-				resolve(c911 = {
-					"local":local,
-					"nome":nome,
-					"ip":ip,
-					"black":toners[3],
-					"cyan":toners[0],
-					"magenta":toners[1],
-					"yellow":toners[2],
-				})
-			
-			}
-		};			
-});
-}
-
-var c3010Promise = function(ip,api){
-	return new Promise(function(resolve, reject){
-		var c3010 = {}
-		var url ="http://"+api+"/"+ip+"/sws/app/information/home/home.json";//Sua URL
-		var xhttp = new XMLHttpRequest();
-		xhttp.open("GET", url);
-		xhttp.send(null);
-		xhttp.onreadystatechange = function() {
-			if (this.readyState === 4 && this.status === 200) {
-				// Typical action to be performed when the document is ready:
-				var json = xhttp.responseText;
-				json = json.split(",")
-				var local = json[8].replace(/location: "/g,'')
-				local = local.replace(/"/g,'')
-				var nome = json[6].match(/PRN.../)
-				var ip = json[10].replace(/ip_addr: "/g,'')
-				ip = ip.replace(/"/g,'')
-				var black = json[18].replace(/\D/gim, '')
-				var cyan = json[22].replace(/\D/gim, '')
-				var magenta = json[26].replace(/\D/gim, '')
-				var yellow = json[30].replace(/\D/gim, '')
-				
-			
-				resolve(c3010 = {
-					"local":local,
-					"nome":nome,
-					"ip":ip,
-					"black":black,
-					"cyan":cyan,
-					"magenta":magenta,
-					"yellow":yellow,
-				})
-				
-			}
-		};			
-});
-}
 
 function selecionaImp(){
 	
@@ -303,6 +231,14 @@ var lecadastradas = function(){
 		}else if(imp.modelo == "C911"){
 			novocard(imp.id)
 			c911Promise(imp.ip,api)
+				.then(function(response){	
+					
+					//cardsVetor.push(response)
+					Atualiza(imp.id,response)
+				})
+		}else if(imp.modelo == "M404"){
+			novocard(imp.id)
+			m404Promise(imp.ip,api)
 				.then(function(response){	
 					
 					//cardsVetor.push(response)
