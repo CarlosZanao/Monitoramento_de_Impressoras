@@ -10,6 +10,7 @@
 a{
     text-decoration: none;
 }
+
 #navbar{
     margin: 10px;
     width: auto;
@@ -74,9 +75,115 @@ a{
 #inputmodelo{
     width: 120px;
 }
-#cards{
-    width: 80%;
-    margin: auto;
+
+@media only screen and (max-width: 1920px) {
+    #cards{
+        position: absolute;
+        left: 16%;
+    }
+
+}
+
+@media only screen and (max-width: 1600px) {
+    #cards{
+        position: absolute;
+        left: 10%;
+    }
+
+}
+
+@media only screen and (max-width: 1366px) {
+    #cards{
+        position: absolute;
+        left: 4%;
+    }
+
+}
+@media only screen and (max-width: 1200px) {
+    #cards{
+        position: absolute;
+        left: 10%;
+    }
+
+}
+@media only screen and (max-width: 800px) {
+    #cards{
+        position: absolute;
+        left: 9%;
+    }
+
+}
+@media only screen and (max-width: 500px) {
+    body{
+        margin: 0px;
+    }
+    #navbar{
+        margin: 0px;
+        width: auto;
+        text-align: center;
+        height: 34px;
+        background-color: rgb(55, 73, 88);
+        animation-name: helloNavbar;
+        animation-duration: 1.5s;
+        font-family: Candara;
+        font-size: 13pt;
+        border-radius: 0px;
+        box-shadow: 1px 1px 2px black, 0 0 25px rgb(233, 233, 233);
+    }
+    #cards{
+        position: absolute;
+        left: 11%;
+    }
+
+}
+@media only screen and (max-width: 400px) {
+    body{
+        margin: 0px;
+    }
+    #navbar{
+        margin: 0px;
+        width: auto;
+        text-align: center;
+        height: 34px;
+        background-color: rgb(55, 73, 88);
+        animation-name: helloNavbar;
+        animation-duration: 1.5s;
+        font-family: Candara;
+        font-size: 13pt;
+        border-radius: 0px;
+        box-shadow: 1px 1px 2px black, 0 0 25px rgb(233, 233, 233);
+    }
+    #cards{
+        position: absolute;
+        left: 8%;
+    }
+
+}
+@media only screen and (max-width: 350px) {
+    
+    body{
+        margin: 0px;
+    }
+    
+    #navbar{
+        margin: 0px;
+        width: auto;
+        text-align: center;
+        height: 34px;
+        background-color: rgb(55, 73, 88);
+        animation-name: helloNavbar;
+        animation-duration: 1.5s;
+        font-family: Candara;
+        font-size: 13pt;
+        border-radius: 0px;
+        box-shadow: 1px 1px 2px black, 0 0 25px rgb(233, 233, 233);
+    }
+
+    #cards{
+        position: absolute;
+        left: 1%;
+    }
+
 }
 .card {
     background-color: rgb(233, 233, 233);
