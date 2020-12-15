@@ -1,5 +1,6 @@
 "use strict";
 
+var api = "192.168.26.192:3000";
 var impressoras = [{
   "id": "0",
   "modelo": "C3010",
@@ -25,10 +26,10 @@ var molelos = ['C3010', 'C911'];
 var cardsElement = document.getElementById('cards');
 var visivel = false;
 
-var c911Promise = function c911Promise(ip) {
+var c911Promise = function c911Promise(ip, api) {
   return new Promise(function (resolve, reject) {
     var c911 = {};
-    var url = "http://192.168.26.192:3000/" + ip + "/status.htm"; //Sua URL
+    var url = "http://" + api + "/" + ip + "/status.htm"; //Sua URL
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", url);
@@ -63,10 +64,10 @@ var c911Promise = function c911Promise(ip) {
   });
 };
 
-var c3010Promise = function c3010Promise(ip) {
+var c3010Promise = function c3010Promise(ip, api) {
   return new Promise(function (resolve, reject) {
     var c3010 = {};
-    var url = "http://192.168.26.192:3000/" + ip + "/sws/app/information/home/home.json"; //Sua URL
+    var url = "http://" + api + "/" + ip + "/sws/app/information/home/home.json"; //Sua URL
 
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", url);
@@ -278,13 +279,13 @@ var lecadastradas = function lecadastradas() {
   impressoras.forEach(function (imp) {
     if (imp.modelo == "C3010") {
       novocard(imp.id);
-      c3010Promise(imp.ip).then(function (response) {
+      c3010Promise(imp.ip, api).then(function (response) {
         //cardsVetor.push(response)
         Atualiza(imp.id, response);
       });
     } else if (imp.modelo == "C911") {
       novocard(imp.id);
-      c911Promise(imp.ip).then(function (response) {
+      c911Promise(imp.ip, api).then(function (response) {
         //cardsVetor.push(response)
         Atualiza(imp.id, response);
       });
