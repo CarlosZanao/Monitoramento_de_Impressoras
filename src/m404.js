@@ -16,7 +16,7 @@ export default function m404Promise(ip,api){
 					"local":"local",
 					"nome":"nome",
 					"ip":ip,
-					"black":porcentagem,
+                    "black":porcentagem,
 				})
 				//console.log(m404)
 			

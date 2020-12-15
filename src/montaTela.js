@@ -1,6 +1,6 @@
 export {Atualiza,novocard};
 
-function Atualiza(id,impressora){
+function Atualiza(id,impressora,modelo){
 	//divCard
 	var divcardElement = document.getElementById(id)
 	divcardElement.innerHTML='';
@@ -37,75 +37,96 @@ function Atualiza(id,impressora){
 	//linha
 	var divlinhaElement = document.createElement('div')
 	divlinhaElement.setAttribute('class','linha')
-	
-	
-	//black
-	var divpogressbarbElement = document.createElement('div')
-	divpogressbarbElement.setAttribute('class','pogressbarb')
-	divpogressbarbElement.style.width = impressora.black+"%";
-	/*if(impressora.black < 30){
-		divpogressbarbElement.style.color = "black";
-	}*/
-	var porcentagemb = document.createTextNode(impressora.black+"%")
+    //add Elementos
+    divcardElement.appendChild(divnomeElement)
+    divcardElement.appendChild(divnomeimpElement)
+    divcardElement.appendChild(divipElement)
+    divcardElement.appendChild(divlinhaElement)
+    
+	if(modelo == "M404"){
+        //black
+        var divpogressbarbElement = document.createElement('div')
+        divpogressbarbElement.setAttribute('class','pogressbarbunica')
+        divpogressbarbElement.style.height = impressora.black*1.5+"px";
+        divpogressbarbElement.style.marginTop = "-"+impressora.black*1.5+"px";
+        /*if(impressora.black < 30){
+            divpogressbarbElement.style.color = "black";
+        }*/
+        var porcentagemb = document.createTextNode(impressora.black+"%")
 
-	divpogressbarbElement.appendChild(porcentagemb)
+        divpogressbarbElement.appendChild(porcentagemb)
 
-	//blackShadow
-	var divshadowbElement = document.createElement('div')
-	divshadowbElement.setAttribute('class','shadowb')
-	
+        //blackShadow
+        var divshadowbElement = document.createElement('div')
+        divshadowbElement.setAttribute('class','shadowbunica')
+        
+        //Add Elementos 
+        divcardElement.appendChild(divshadowbElement)
+        divcardElement.appendChild(divpogressbarbElement)
 
-	//cyan
-	var divpogressbarcElement = document.createElement('div')
-	divpogressbarcElement.setAttribute('class','pogressbarc')
-	divpogressbarcElement.style.width = impressora.cyan+"%";
-	var porcentagemc = document.createTextNode(impressora.cyan+"%")
+	}else{
+        //black
+        var divpogressbarbElement = document.createElement('div')
+        divpogressbarbElement.setAttribute('class','pogressbarb')
+        divpogressbarbElement.style.width = impressora.black+"%";
+        /*if(impressora.black < 30){
+            divpogressbarbElement.style.color = "black";
+        }*/
+        var porcentagemb = document.createTextNode(impressora.black+"%")
 
-	divpogressbarcElement.appendChild(porcentagemc)
-	
-	//cyanShadow
-	var divshadowcElement = document.createElement('div')
-	divshadowcElement.setAttribute('class','shadowc')
-	
-	//magenta
-	var divpogressbarmElement = document.createElement('div')
-	divpogressbarmElement.setAttribute('class','pogressbarm')
-	divpogressbarmElement.style.width = impressora.magenta+"%";
-	var porcentagemm = document.createTextNode(impressora.magenta+"%")
-	
+        divpogressbarbElement.appendChild(porcentagemb)
 
-	divpogressbarmElement.appendChild(porcentagemm)
-	//magentaShadow
-	var divshadowmElement = document.createElement('div')
-	divshadowmElement.setAttribute('class','shadowm')
+        //blackShadow
+        var divshadowbElement = document.createElement('div')
+        divshadowbElement.setAttribute('class','shadowb')
+        
+        //cyan
+        var divpogressbarcElement = document.createElement('div')
+        divpogressbarcElement.setAttribute('class','pogressbarc')
+        divpogressbarcElement.style.width = impressora.cyan+"%";
+        var porcentagemc = document.createTextNode(impressora.cyan+"%")
 
-	//yellow
-	var divpogressbaryElement = document.createElement('div')
-	divpogressbaryElement.setAttribute('class','pogressbary')
-	divpogressbaryElement.style.width = impressora.yellow+"%";
-	var porcentagemy = document.createTextNode(impressora.yellow+"%")
+        divpogressbarcElement.appendChild(porcentagemc)
+        
+        //cyanShadow
+        var divshadowcElement = document.createElement('div')
+        divshadowcElement.setAttribute('class','shadowc')
+        
+        //magenta
+        var divpogressbarmElement = document.createElement('div')
+        divpogressbarmElement.setAttribute('class','pogressbarm')
+        divpogressbarmElement.style.width = impressora.magenta+"%";
+        var porcentagemm = document.createTextNode(impressora.magenta+"%")
+        
 
-	divpogressbaryElement.appendChild(porcentagemy)
+        divpogressbarmElement.appendChild(porcentagemm)
+        //magentaShadow
+        var divshadowmElement = document.createElement('div')
+        divshadowmElement.setAttribute('class','shadowm')
 
-	//magentaShadow
-	var divshadowyElement = document.createElement('div')
-	divshadowyElement.setAttribute('class','shadowy')
-	
+        //yellow
+        var divpogressbaryElement = document.createElement('div')
+        divpogressbaryElement.setAttribute('class','pogressbary')
+        divpogressbaryElement.style.width = impressora.yellow+"%";
+        var porcentagemy = document.createTextNode(impressora.yellow+"%")
 
-	divcardElement.appendChild(divnomeElement)
-	divcardElement.appendChild(divnomeimpElement)
-	divcardElement.appendChild(divipElement)
-	divcardElement.appendChild(divlinhaElement)
-	divcardElement.appendChild(divshadowbElement)
-	divcardElement.appendChild(divpogressbarbElement)
-	divcardElement.appendChild(divshadowcElement)
-	divcardElement.appendChild(divpogressbarcElement)
-	divcardElement.appendChild(divshadowmElement)
-	divcardElement.appendChild(divpogressbarmElement)
-	divcardElement.appendChild(divshadowyElement)
-	divcardElement.appendChild(divpogressbaryElement)
-	
-		
+        divpogressbaryElement.appendChild(porcentagemy)
+
+        //magentaShadow
+        var divshadowyElement = document.createElement('div')
+        divshadowyElement.setAttribute('class','shadowy')
+        
+        //add elementos
+        
+        divcardElement.appendChild(divshadowbElement)
+        divcardElement.appendChild(divpogressbarbElement)
+        divcardElement.appendChild(divshadowcElement)
+        divcardElement.appendChild(divpogressbarcElement)
+        divcardElement.appendChild(divshadowmElement)
+        divcardElement.appendChild(divpogressbarmElement)
+        divcardElement.appendChild(divshadowyElement)
+        divcardElement.appendChild(divpogressbaryElement)
+    }	
 }
 
 function novocard(id){

@@ -37,9 +37,6 @@ function adicionaIMP(){
 			"id":impressoras.length,
 			"modelo":inputModelo.getAttribute("value"),
 			"ip":inputIP.value
-			
-
-
 
 		}
 		
@@ -94,7 +91,7 @@ var lecadastradas = function(){
 				.then(function(response){	
 					
 					//cardsVetor.push(response)
-					montaTela.Atualiza(imp.id,response)
+					montaTela.Atualiza(imp.id,response,imp.modelo)
 				})
 		}else if(imp.modelo == "C911"){
 			montaTela.novocard(imp.id)
@@ -102,7 +99,7 @@ var lecadastradas = function(){
 				.then(function(response){	
 					
 					//cardsVetor.push(response)
-					montaTela.Atualiza(imp.id,response)
+					montaTela.Atualiza(imp.id,response,imp.modelo)
 				})
 		}else if(imp.modelo == "M404"){
 			montaTela.novocard(imp.id)
@@ -110,7 +107,7 @@ var lecadastradas = function(){
 				.then(function(response){	
 					
 					//cardsVetor.push(response)
-					montaTela.Atualiza(imp.id,response)
+					montaTela.Atualiza(imp.id,response,imp.modelo)
 				})
 		}
 	});
