@@ -1,10 +1,12 @@
-import m404Promise from '/src/m404.js'
-import c911Promise from '/src/c911.js'
-import c3010Promise from '/src/c3010.js'
+import axios from "axios";
 import * as montaTela from '/src/montaTela.js'
 
-var api = "192.168.26.192:3000"
-var impressoras = [{"id":"0","modelo":"C3010","ip":"192.168.31.122"},{"id":"1","modelo":"C3010","ip":"192.168.31.187"},{"id":"2","modelo":"C3010","ip":"192.168.31.158"},{"id":"3","modelo":"C911","ip":"192.168.31.118"},{"id":"4","modelo":"M404","ip":"192.168.31.125"}]
+//axios
+const api = axios.create({
+	baseURL: "http://localhost:3303/api",
+  });
+
+var impressoras = [{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"m404","ip":"192.168.31.193","tipo":"pb"}]
 var molelos = ['C3010','C911'];
 var visivel = false
 
@@ -27,7 +29,7 @@ function selecionaImp(){
 	});
 }
 
-function adicionaIMP(){
+/*function adicionaIMP(){
 	var inputModelo = document.getElementById('inputmodelo')
 	var inputIP = document.getElementById("inputIP")
 
@@ -60,7 +62,7 @@ function adicionaIMP(){
 		}
 		console.log(teste)
 	})
-}
+}*/
 
 function btnCadastro(){
 	var addBtn = document.getElementById("addbtn")
@@ -85,31 +87,14 @@ function mostraForm(valor){
 
 var lecadastradas = function(){
  	impressoras.forEach(imp => {
-		if(imp.modelo=="C3010"){
-			montaTela.novocard(imp.id)
-			c3010Promise(imp.ip,api)
-				.then(function(response){	
-					
-					//cardsVetor.push(response)
-					montaTela.Atualiza(imp.id,response,imp.modelo)
-				})
-		}else if(imp.modelo == "C911"){
-			montaTela.novocard(imp.id)
-			c911Promise(imp.ip,api)
-				.then(function(response){	
-					
-					//cardsVetor.push(response)
-					montaTela.Atualiza(imp.id,response,imp.modelo)
-				})
-		}else if(imp.modelo == "M404"){
-			montaTela.novocard(imp.id)
-			m404Promise(imp.ip,api)
-				.then(function(response){	
-					
-					//cardsVetor.push(response)
-					montaTela.Atualiza(imp.id,response,imp.modelo)
-				})
-		}
+		montaTela.novocard(imp.id)
+		api.post("imp/",{"imp":{"modelo":`${imp.modelo}`,"ip":imp.ip}})
+			.then(function(response){	
+				montaTela.Atualiza(imp.id,response.data.imp,imp.tipo)
+			})
+			.catch((err) => {
+				console.error("ops! ocorreu um erro" + err);
+				});
 	});
 }
 

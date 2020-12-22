@@ -10,6 +10,9 @@
 a{
     text-decoration: none;
 }
+body{
+    background-color: whitesmoke;
+}
 
 #navbar{
     margin: 10px;
@@ -26,6 +29,7 @@ a{
 }
 #titulo{
     color: floralwhite;
+    font-size: 18pt;
 }
 #addbtn{
     position: relative;
@@ -186,7 +190,8 @@ a{
 
 }
 .card {
-    background-color: rgb(233, 233, 233);
+    background-color: white;
+    /*background-color: rgb(233, 233, 233);*/
     position: relative;
     width: 250px;
     height: 250px;
@@ -222,8 +227,8 @@ a{
 .pogressbarbunica{
     
     margin-top: -20px;
-    margin-left: 45px;
-    width: 150px;
+    margin-left: 60px;
+    width: 130px;
     height: 20px;
     border-radius: 5px;
     background-color: black;
@@ -234,8 +239,8 @@ a{
 }
 .shadowbunica{
     margin-top: 25px;
-    margin-left: 45px;
-    width: 150px;
+    margin-left: 60px;
+    width: 130px;
     height: 150px;
     border-radius: 5px;
     background-color: rgb(184, 180, 180);

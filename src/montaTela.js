@@ -1,6 +1,6 @@
 export {Atualiza,novocard};
 
-function Atualiza(id,impressora,modelo){
+function Atualiza(id,impressora,tipo){
 	//divCard
 	var divcardElement = document.getElementById(id)
 	divcardElement.innerHTML='';
@@ -43,7 +43,7 @@ function Atualiza(id,impressora,modelo){
     divcardElement.appendChild(divipElement)
     divcardElement.appendChild(divlinhaElement)
     
-	if(modelo == "M404"){
+	if(tipo == "pb"){
         //black
         var divpogressbarbElement = document.createElement('div')
         divpogressbarbElement.setAttribute('class','pogressbarbunica')
