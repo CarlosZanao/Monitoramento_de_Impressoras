@@ -6,7 +6,7 @@ const api = axios.create({
 	baseURL: "http://localhost:3303/api",
   });
 
-var impressoras = [{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"m404","ip":"192.168.31.193","tipo":"pb"}]
+var impressoras = [{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"e50145","ip":"192.168.31.228","tipo":"pb"}]
 var molelos = ['C3010','C911'];
 var visivel = false
 
@@ -32,14 +32,12 @@ function selecionaImp(){
 /*function adicionaIMP(){
 	var inputModelo = document.getElementById('inputmodelo')
 	var inputIP = document.getElementById("inputIP")
-
 	var btnAddimp = document.getElementById("btnAddimp")
 	btnAddimp.addEventListener("click",function(event){
 		var newImp = {
 			"id":impressoras.length,
 			"modelo":inputModelo.getAttribute("value"),
 			"ip":inputIP.value
-
 		}
 		
 		if(newImp.modelo=="C3010"){
@@ -102,10 +100,4 @@ var lecadastradas = function(){
 selecionaImp()
 lecadastradas()
 btnCadastro()
-adicionaIMP()
-
-
-
-
-
-
+//adicionaIMP()

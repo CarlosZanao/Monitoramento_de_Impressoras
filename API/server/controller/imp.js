@@ -13,7 +13,19 @@ async function post (req, res) {
             return res.status(200).send(q);
         });
 }
+//Metodo que retorna a lista de impressoras
+async function getIMPs (req, res) {
+    return await imp
+        .getIMPs()
+        .catch(err => {
+            res.status(err.statusCode || 500).send(err);
+        })
+        .then(q => {
+            return res.status(200).send(q);
+        });
+}
+
 
 
 //exportar todos os metodos para poder acessar em outros arquivos 
-module.exports = {post};
+module.exports = {post,getIMPs};

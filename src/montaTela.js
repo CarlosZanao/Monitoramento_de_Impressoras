@@ -1,7 +1,7 @@
 export {Atualiza,novocard};
 
 function Atualiza(id,impressora,tipo){
-	//divCard
+    //divCard
 	var divcardElement = document.getElementById(id)
 	divcardElement.innerHTML='';
 	divcardElement.setAttribute('href','http://'+impressora.ip)

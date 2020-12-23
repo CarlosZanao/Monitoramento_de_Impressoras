@@ -1,10 +1,20 @@
 
 const { response } = require('express');
 const puppeteer = require('puppeteer')
+var fs = require("fs");
 
 //Metodo responsavel por buscar um ususario de acordo com o id
 async function post (imp) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        ignoreHTTPSErrors: true,
+        headless:true,
+        args: [
+            '--ignore-certificate-errors',
+            '--no-sandbox', 
+            '--disable-setuid-sandbox',   
+        ],
+        slowMo:200
+    });
     const page = await browser.newPage();
     if(imp.modelo == "c3010"){
         await page.goto('http://'+imp.ip+'/sws/app/information/home/home.json');
@@ -12,6 +22,14 @@ async function post (imp) {
         await page.goto('http://'+imp.ip+'/status.htm');
     }else if(imp.modelo == "m404"){
         await page.goto('http://'+imp.ip+'/DevMgmt/ConsumableConfigDyn.xml');
+        const page2 = await browser.newPage();
+        await page2.goto('http://'+imp.ip+'/IoMgmt/IoConfig.xml');
+        var conteudo2 = await page2.content();
+    }else if(imp.modelo == "e50145"){
+        await page.goto('https://'+imp.ip+'/hp/device/DeviceStatus/Index');
+        const page2 = await browser.newPage();
+        await page2.goto('https://'+imp.ip+'/hp/device/DeviceInformation/View');
+        var conteudo2 = await page2.content();
     }
     var conteudo = await page.content();
     await browser.close()
@@ -65,12 +83,33 @@ async function post (imp) {
     }else if(imp.modelo == "m404"){
         var porcentagem = conteudo.match(/<dd:ConsumablePercentageLevelRemaining>\d*/g)
         var porcentagem = porcentagem[0].replace(/<dd:ConsumablePercentageLevelRemaining>/,"")
-        
+        var nome = conteudo2.match(/<dd3:Hostname>.*/g)
+        var nome = nome[0].replace(/<dd3:Hostname>/,"")
+        var nome = nome.replace(/<\/dd3:Hostname>/,"")
+
         return await JSON.stringify({
             "imp":{
                 "local":"local",
-                "nome":"nome",
-                "ip":ip,
+                "nome":nome,
+                "ip":imp.ip,
+                "black":porcentagem,
+            }
+        })
+    }else if(imp.modelo == "e50145"){
+        var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d*/g)
+        var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
+        var nome = conteudo.match(/<p class="device-name" id="HomeDeviceName">.*/g)
+        var nome = nome[0].replace(/<p class="device-name" id="HomeDeviceName">/,"")
+        var nome = nome.replace(/<\/p>/,"")
+        var local = conteudo2.match(/<p id="DeviceLocation">.*/g)
+        var local = local[0].replace(/<p id="DeviceLocation">/,"")
+        var local = local.replace(/<\/p>/,"")
+        
+        return await JSON.stringify({
+            "imp":{
+                "local":local,
+                "nome":nome,
+                "ip":imp.ip,
                 "black":porcentagem,
             }
         })
@@ -85,5 +124,9 @@ async function post (imp) {
     
 }
 
+async function getIMPs() {
+    var jsonData = fs.readFileSync(__dirname+"/imps.json", "utf8");
+    return JSON.stringify(jsonData)
+}
 //exportar todos os modulos para poderem ser usados em outros arquivos
-module.exports = {post};
+module.exports = {post,getIMPs};
