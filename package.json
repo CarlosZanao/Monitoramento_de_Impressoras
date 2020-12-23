@@ -19,9 +19,10 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --mode=development",
-    "Prod": "babel ./src/* -o ./public/bundle.js"
+    "Prod": "babel ./src/main.js -o ./public/bundle.js"
   },
   "dependencies": {
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "http-server": "^0.12.3"
   }
 }

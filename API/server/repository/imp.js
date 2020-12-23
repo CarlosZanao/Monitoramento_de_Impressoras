@@ -25,7 +25,7 @@ async function post (imp) {
         const page2 = await browser.newPage();
         await page2.goto('http://'+imp.ip+'/IoMgmt/IoConfig.xml');
         var conteudo2 = await page2.content();
-    }else if(imp.modelo == "e50145"){
+    }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
         await page.goto('https://'+imp.ip+'/hp/device/DeviceStatus/Index');
         const page2 = await browser.newPage();
         await page2.goto('https://'+imp.ip+'/hp/device/DeviceInformation/View');
@@ -95,7 +95,7 @@ async function post (imp) {
                 "black":porcentagem,
             }
         })
-    }else if(imp.modelo == "e50145"){
+    }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
         var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d*/g)
         var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
         var nome = conteudo.match(/<p class="device-name" id="HomeDeviceName">.*/g)

@@ -1,6 +1,6 @@
 module.exports = {
     env: 'development',
     nomeApi: 'MonitoramentodeIpressoras',
-    urlApi: 'http://localhost',
+    urlApi: 'http://192.168.26.192',
     portApi: 3303,
 };

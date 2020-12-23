@@ -3,10 +3,10 @@ import * as montaTela from '/src/montaTela.js'
 
 //axios
 const api = axios.create({
-	baseURL: "http://localhost:3303/api",
+	baseURL: "http://192.168.26.192:3303/api",
   });
 
-var impressoras = [{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"e50145","ip":"192.168.31.228","tipo":"pb"}]
+var impressoras = [{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"e50145","ip":"192.168.31.228","tipo":"pb"},{"id":"6","modelo":"e52645","ip":"192.168.31.168","tipo":"pb"}]
 var molelos = ['C3010','C911'];
 var visivel = false
 
