@@ -205,8 +205,10 @@ async function post (imp) {
 }
 
 async function getIMPs() {
-    var jsonData = fs.readFileSync(__dirname+"/imps.json", "utf8");
-    return JSON.stringify(jsonData)
+    //var jsonData = await fs.readFileSync(__dirname+"/imps.json", "utf8");
+    var impressoras =[{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"e50145","ip":"192.168.31.228","tipo":"pb"},{"id":"6","modelo":"e52645","ip":"192.168.31.168","tipo":"pb"}]
+    
+    return await JSON.stringify(impressoras)
 }
 //exportar todos os modulos para poderem ser usados em outros arquivos
 module.exports = {post,getIMPs};
