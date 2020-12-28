@@ -17,18 +17,92 @@ async function post (imp) {
     });
     const page = await browser.newPage();
     if(imp.modelo == "c3010"){
-        await page.goto('http://'+imp.ip+'/sws/app/information/home/home.json');
-    }else if(imp.modelo == "c911"){
-        await page.goto('http://'+imp.ip+'/status.htm');
+        try {
+            await page.goto('http://'+imp.ip+'/sws/app/information/home/home.json',{timeout: 30000}, (err, data) => {
+                // Mistaken assumption: throwing here...
+                if (err) {
+                throw err;
+                }
+            });
+            } catch (err) {
+            // This will not catch the throw!
+            await browser.close()
+            }            
+    }else if(imp.modelo == "c911"){    
+        try {
+            await page.goto('http://'+imp.ip+'/status.htm',{timeout: 30000}, (err, data) => {
+                // Mistaken assumption: throwing here...
+                if (err) {
+                throw err;
+                }
+            });
+        } catch (err) {
+        // This will not catch the throw!
+        await browser.close()
+        
+        }
+        
     }else if(imp.modelo == "m404"){
-        await page.goto('http://'+imp.ip+'/DevMgmt/ConsumableConfigDyn.xml');
+
+        try {
+            await page.goto('http://'+imp.ip+'/DevMgmt/ConsumableConfigDyn.xml',{timeout: 30000}, (err, data) => {
+                // Mistaken assumption: throwing here...
+                if (err) {
+                throw err;
+                }
+            });
+        } catch (err) {
+        // This will not catch the throw!
+        await browser.close()
+        
+        }
+        
         const page2 = await browser.newPage();
-        await page2.goto('http://'+imp.ip+'/IoMgmt/IoConfig.xml');
+        
+        try {
+            await page2.goto('http://'+imp.ip+'/IoMgmt/IoConfig.xml',{timeout: 30000}, (err, data) => {
+                // Mistaken assumption: throwing here...
+                if (err) {
+                throw err;
+                }
+            });
+        } catch (err) {
+        // This will not catch the throw!
+        await browser.close()
+        
+        }
         var conteudo2 = await page2.content();
+
+
     }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
-        await page.goto('https://'+imp.ip+'/hp/device/DeviceStatus/Index');
+        
+        try {
+            await page.goto('https://'+imp.ip+'/hp/device/DeviceStatus/Index',{timeout: 30000}, (err, data) => {
+                // Mistaken assumption: throwing here...
+                if (err) {
+                throw err;
+                }
+            });
+        } catch (err) {
+        // This will not catch the throw!
+        await browser.close()
+        
+        }
+        
         const page2 = await browser.newPage();
-        await page2.goto('https://'+imp.ip+'/hp/device/DeviceInformation/View');
+        
+        try {
+            await page2.goto('https://'+imp.ip+'/hp/device/DeviceInformation/View',{timeout: 30000}, (err, data) => {
+                // Mistaken assumption: throwing here...
+                if (err) {
+                throw err;
+                }
+            });
+        } catch (err) {
+        // This will not catch the throw!
+        await browser.close()
+        
+        }
         var conteudo2 = await page2.content();
     }
     var conteudo = await page.content();
@@ -96,8 +170,15 @@ async function post (imp) {
             }
         })
     }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
-        var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d*/g)
-        var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
+        
+        if (conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d*/g) == null) {
+            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d*/g)
+            var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
+        } else {
+            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d*/g)
+            var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
+        }
+
         var nome = conteudo.match(/<p class="device-name" id="HomeDeviceName">.*/g)
         var nome = nome[0].replace(/<p class="device-name" id="HomeDeviceName">/,"")
         var nome = nome.replace(/<\/p>/,"")
@@ -114,7 +195,6 @@ async function post (imp) {
             }
         })
     }
-
         return {
             statusCode: 505,
             msg: 'Erro: impressora não esta respondendo'

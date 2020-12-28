@@ -136,10 +136,13 @@ function novocard(id){
 	divcardElement.setAttribute('class','card')
 	divcardElement.setAttribute('id',id)
 
-	//textoCaregando
+    //textoCaregando
+	var spanElement = document.createElement('span')
+	spanElement.setAttribute('class','spnLoad')
 	var carregandoText = document.createTextNode("Carregando...")
 
-	divcardElement.appendChild(carregandoText)
+    spanElement.appendChild(carregandoText)
+	divcardElement.appendChild(spanElement)
 	cardsElement.appendChild(divcardElement)	
 }
 /*function blur(estado,id){

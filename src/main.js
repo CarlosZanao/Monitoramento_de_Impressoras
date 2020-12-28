@@ -89,9 +89,10 @@ var lecadastradas = function(){
 		api.post("imp/",{"imp":{"modelo":`${imp.modelo}`,"ip":imp.ip}})
 			.then(function(response){	
 				montaTela.Atualiza(imp.id,response.data.imp,imp.tipo)
+				//console.log(imp.id,response.data.imp,imp.tipo)
 			})
 			.catch((err) => {
-				console.error("ops! ocorreu um erro" + err);
+				console.error("Ocorreu um erro ao obter dados da impressora "+ err);
 				});
 	});
 }
