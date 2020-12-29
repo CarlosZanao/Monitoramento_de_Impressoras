@@ -1,4 +1,39 @@
+import axios from "axios";
 export {Atualiza,novocard,erroMsg};
+//axios
+const api = axios.create({
+	baseURL: "http://192.168.26.192:3303/api",
+  });
+/*function blur(estado,id){
+	var divcardElement = document.getElementById(id)
+	if(estado==true){	
+		divcardElement.style.filter = "blur(2px)"
+	}else if(estado == false){
+		divcardElement.style.filter = "blur(0px)"
+	}
+	
+}*/
+function removeIMP(id){
+	api.post("imp/rmimpressora",{"id":id})
+	.then(function(response){
+		var cardElement = document.getElementById(id)
+		var cardsElement = document.getElementById('cards');
+		cardsElement.removeChild(cardElement)
+	})
+	.catch((err) => {
+		console.error("Não foi possivel remover a impressora")
+	});
+
+}
+function btnDelete(estado,id){
+	var divdeletBtnElement = document.getElementById("dell"+id)
+	if(estado==true){	
+		divdeletBtnElement.style.display = "block"
+	}else if(estado == false){
+		divdeletBtnElement.style.display = "none"
+	}
+	
+}
 
 function Atualiza(id,impressora,tipo){
     //divCard
@@ -12,8 +47,26 @@ function Atualiza(id,impressora,tipo){
 	divcardElement.addEventListener("mouseout",function(event){
 		blur(false,id)
 	})*/
+    divcardElement.addEventListener("mouseover",function(event){
+		btnDelete(true,id)
+	})
+	divcardElement.addEventListener("mouseout",function(event){
+		btnDelete(false,id)
+	})
 
-	//Nome
+    //excluir btn
+    var divdeletBtnElement = document.createElement('a')
+    divdeletBtnElement.setAttribute('class','deletebtn')
+    divdeletBtnElement.setAttribute('id',"dell"+id)
+    divdeletBtnElement.setAttribute('href','#')
+    divdeletBtnElement.addEventListener("click",function(event){
+		removeIMP(id)
+    })
+    var iconDelete = document.createElement('i')
+    iconDelete.setAttribute('class','fas fa-times')
+
+	divdeletBtnElement.appendChild(iconDelete)
+    //Nome
 	var divnomeElement = document.createElement('div')
 	divnomeElement.setAttribute('class','nomecetor')
 	var nomeText = document.createTextNode(impressora.local)
@@ -38,6 +91,7 @@ function Atualiza(id,impressora,tipo){
 	var divlinhaElement = document.createElement('div')
 	divlinhaElement.setAttribute('class','linha')
     //add Elementos
+    divcardElement.appendChild(divdeletBtnElement)
     divcardElement.appendChild(divnomeElement)
     divcardElement.appendChild(divnomeimpElement)
     divcardElement.appendChild(divipElement)
@@ -170,12 +224,3 @@ function erroMsg(id,ip){
     divcardElement.appendChild(brElement)	
     divcardElement.appendChild(spanipElement)
 }
-/*function blur(estado,id){
-	var divcardElement = document.getElementById(id)
-	if(estado==true){	
-		divcardElement.style.filter = "blur(2px)"
-	}else if(estado == false){
-		divcardElement.style.filter = "blur(0px)"
-	}
-	
-}*/

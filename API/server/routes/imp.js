@@ -12,5 +12,7 @@ router.route('/').post(imp.post);
 router.route('/impressoras').get(imp.getIMPs);
 //Rota para adicionar nava impressoras
 router.route('/addimpressora').post(imp.postAdd);
+//Rota para remover uma impressora
+router.route('/rmimpressora').post(imp.postRm);
 
 module.exports = router;

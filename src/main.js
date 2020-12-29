@@ -6,7 +6,7 @@ const api = axios.create({
 	baseURL: "http://192.168.26.192:3303/api",
   });
 
-var molelos = ['C3010','C911'];
+var molelos = ['C3010','C911',"M404","E50145","E52645"];
 var visivel = false
 
 
@@ -29,38 +29,48 @@ function selecionaImp(){
 	});
 }
 
-/*function adicionaIMP(){
+
+function adicionaIMP(){
 	var inputModelo = document.getElementById('inputmodelo')
 	var inputIP = document.getElementById("inputIP")
 	var btnAddimp = document.getElementById("btnAddimp")
+	var tipo = "pb"
+	var modelo = null
 	btnAddimp.addEventListener("click",function(event){
-		var newImp = {
-			"id":impressoras.length,
-			"modelo":inputModelo.getAttribute("value"),
-			"ip":inputIP.value
+		switch (inputModelo.getAttribute("value")) {
+			case "C3010":
+				modelo = "c3010"
+				tipo = "color"
+				break;
+			case "C911":
+				modelo = "c911"
+				tipo = "color"
+				break;
+			case "M404":
+				modelo = "m404"
+				tipo = "pb"
+				break;
+			case "E50145":
+				modelo = "e50145"
+				tipo = "pb"
+				break;
+			case "E52645":
+				modelo = "e52645"
+				tipo = "pb"
+				break;
+			default:
+				break;
 		}
-		
-		if(newImp.modelo=="C3010"){
-			montaTela.novocard(newImp.id)
-			c3010Promise(newImp.ip)
-				.then(function(response){	
-					
-					//cardsVetor.push(response)
-					montaTela.Atualiza(newImp.id,response)
-				})
-		}else if(newImp.modelo == "C911"){
-			montaTela.novocard(newImp.id)
-			c911Promise(newImp.ip)
-				.then(function(response){	
-					montaTela.Atualiza(newImp.id,response)
-				})
-				.catch(function(response){
-					console.log(response)
-				})
-		}
-		console.log(teste)
+
+		api.post("imp/addimpressora",{"id":"0","modelo":modelo,"ip":inputIP.value,"tipo":tipo})
+		.then(function(response){
+			lecadastradas(true)
+		})
+		.catch((err) => {
+			console.error("Não foi possivel cadastrar a impressora")
+		});
 	})
-}*/
+}
 
 function btnCadastro(){
 	var addBtn = document.getElementById("addbtn")
@@ -83,7 +93,30 @@ function mostraForm(valor){
 	}	
 }
 
-var lecadastradas = function(){
+var lecadastradas = function(add){
+	if(add == true){
+		var i =0
+		api.get("imp/impressoras")
+		.then(function(response){
+			i = response.data.length - 1
+			const imp = response.data[i];
+			montaTela.novocard(imp.id)
+			// request para cada impressora
+			api.post("imp/",{"imp":{"modelo":`${imp.modelo}`,"ip":imp.ip}})
+			.then(function(response){	
+				montaTela.Atualiza(imp.id,response.data.imp,imp.tipo)
+			})
+			.catch((err) => {
+				console.error("Ocorreu um erro ao obter dados da impressora ("+imp.ip+") "+ err);
+				montaTela.erroMsg(imp.id,imp.ip)
+			});
+				
+		})
+		.catch((err) => {
+			console.error("Não foi possivel obter a lista de impressoras a partir da API: "+err)
+		});
+
+	}else{
 	//requeste lista de impressoras 
 	api.get("imp/impressoras")
 	.then(function(response){
@@ -104,11 +137,14 @@ var lecadastradas = function(){
 	.catch((err) => {
 		console.error("Não foi possivel obter a lista de impressoras a partir da API: "+err)
 	});
-
+	}
 }
 
 
 selecionaImp()
 lecadastradas()
 btnCadastro()
-//adicionaIMP()
+adicionaIMP()
+
+
+

@@ -326,4 +326,12 @@ body{
     text-align: center;
     font-size: 20px;
 }
+.deletebtn{
+    position: absolute;
+    right: 25px;
+    display: none;
+    color: rgb(192, 21, 21);
+    font-size: 13pt;
+    z-index: 2;
+}
 

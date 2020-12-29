@@ -35,7 +35,17 @@ async function postAdd (req, res) {
             return res.status(200).send(q);
         });
 }
-
+//Metodo para remover uma impressora
+async function postRm (req, res) {
+    return await imp
+        .postRm(req.body)
+        .catch(err => {
+            res.status(err.statusCode || 500).send(err);
+        })
+        .then(q => {
+            return res.status(200).send(q);
+        });
+}
 
 //exportar todos os metodos para poder acessar em outros arquivos 
-module.exports = {post,getIMPs,postAdd};
+module.exports = {post,getIMPs,postAdd,postRm};

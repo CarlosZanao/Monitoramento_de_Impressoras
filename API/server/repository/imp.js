@@ -173,11 +173,11 @@ async function post (imp) {
         })
     }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
         
-        if (conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d*/g) == null) {
-            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d*/g)
+        if (conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d\d*/g) == null) {
+            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d\d*/g)
             var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
         } else {
-            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d*/g)
+            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d\d*/g)
             var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
         }
 
@@ -237,10 +237,33 @@ async function postAdd(imp) {
     fs.writeFileSync(__dirname+"/imps.json",JSON.stringify(impressoras))
     
     //var jsonData = await fs.readFileSync(__dirname+"/imps.json","utf-8");*/
-    return await imp
+    return await "OK"
+}
+// adiciona noca impressora
+async function postRm(imp) {
+    var impressoras = []
+    jsonData = await fs.readFileSync(__dirname+"/imps.json","utf-8");
+    arr = jsonData.replace(/\[/,"")
+    arr = arr.replace(/\]/,"")
+    arr = arr.replace(/},/g,"}&&")
+    arr =arr.split("&&")
+    for (let i = 0; i < arr.length; i++) {
+        const im = arr[i];
+        impressoras.push(JSON.parse(im))
+    }
+
+    for (let i = 0; i < impressoras.length; i++) {
+        const im = impressoras[i];
+        if(im.id == imp.id){
+            impressoras.splice(i,1)
+        }    
+    }
+    fs.writeFileSync(__dirname+"/imps.json",JSON.stringify(impressoras))
+    
+    //var jsonData = await fs.readFileSync(__dirname+"/imps.json","utf-8");*/
+    return await "OK"
 }
 
 
-
 //exportar todos os modulos para poderem ser usados em outros arquivos
-module.exports = {post,getIMPs,postAdd};
+module.exports = {post,getIMPs,postAdd,postRm};
