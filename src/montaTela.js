@@ -13,10 +13,13 @@ const api = axios.create({
 	}
 	
 }*/
+
 function removeIMP(id){
 	api.post("imp/rmimpressora",{"id":id})
 	.then(function(response){
-		var cardElement = document.getElementById(id)
+        
+        var cardElement = document.getElementById(id)
+        cardElement.style.opacit = "30%";
 		var cardsElement = document.getElementById('cards');
 		cardsElement.removeChild(cardElement)
 	})
