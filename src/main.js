@@ -6,9 +6,9 @@ const api = axios.create({
 	baseURL: "http://192.168.26.192:3303/api",
   });
 
-var impressoras = [{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"e50145","ip":"192.168.31.228","tipo":"pb"},{"id":"6","modelo":"e52645","ip":"192.168.31.168","tipo":"pb"}]
 var molelos = ['C3010','C911'];
 var visivel = false
+
 
 function selecionaImp(){
 	
@@ -84,18 +84,27 @@ function mostraForm(valor){
 }
 
 var lecadastradas = function(){
- 	impressoras.forEach(imp => {
-		montaTela.novocard(imp.id)
-		api.post("imp/",{"imp":{"modelo":`${imp.modelo}`,"ip":imp.ip}})
+	//requeste lista de impressoras 
+	api.get("imp/impressoras")
+	.then(function(response){
+		for (let i = 0; i < response.data.length; i++) {
+			const imp = response.data[i];
+			montaTela.novocard(imp.id)
+			// request para cada impressora
+			api.post("imp/",{"imp":{"modelo":`${imp.modelo}`,"ip":imp.ip}})
 			.then(function(response){	
 				montaTela.Atualiza(imp.id,response.data.imp,imp.tipo)
-				//console.log(imp.id,response.data.imp,imp.tipo)
 			})
 			.catch((err) => {
 				console.error("Ocorreu um erro ao obter dados da impressora ("+imp.ip+") "+ err);
 				montaTela.erroMsg(imp.id,imp.ip)
 			});
+		}	
+	})
+	.catch((err) => {
+		console.error("Não foi possivel obter a lista de impressoras a partir da API"+err)
 	});
+
 }
 
 
