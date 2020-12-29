@@ -10,5 +10,7 @@ const router = express.Router();
 router.route('/').post(imp.post);
 //Rota para obter lista de impressoras
 router.route('/impressoras').get(imp.getIMPs);
+//Rota para adicionar nava impressoras
+router.route('/addimpressora').post(imp.postAdd);
 
 module.exports = router;

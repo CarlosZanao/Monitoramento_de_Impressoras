@@ -102,7 +102,7 @@ var lecadastradas = function(){
 		}	
 	})
 	.catch((err) => {
-		console.error("Não foi possivel obter a lista de impressoras a partir da API"+err)
+		console.error("Não foi possivel obter a lista de impressoras a partir da API: "+err)
 	});
 
 }

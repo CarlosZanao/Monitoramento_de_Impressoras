@@ -33,5 +33,23 @@ async function getIMPs () {
     //Aqui retornamos o usuario encontrado no banco 
     return im;
 }
+async function postAdd (imd) {
+    //Aqui estamos buscando ima impressora
+    var im = await imp.postAdd(imd);
+
+    //valida requisição
+    if(!im) {
+        return {
+            statusCode: 400,
+            msg: 'Erro: Falha ao cadastrar impressora'
+        };
+    }
+
+     
+    return im;
+}
+
+
+
 //Exportando todos os metodos que criamos para que consigamos ascesalos em outros arquivos 
-module.exports = {post,getIMPs};
+module.exports = {post,getIMPs,postAdd};

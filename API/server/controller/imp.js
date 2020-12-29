@@ -24,8 +24,18 @@ async function getIMPs (req, res) {
             return res.status(200).send(q);
         });
 }
-
+//Metodo para adicionar nova impressora
+async function postAdd (req, res) {
+    return await imp
+        .postAdd(req.body)
+        .catch(err => {
+            res.status(err.statusCode || 500).send(err);
+        })
+        .then(q => {
+            return res.status(200).send(q);
+        });
+}
 
 
 //exportar todos os metodos para poder acessar em outros arquivos 
-module.exports = {post,getIMPs};
+module.exports = {post,getIMPs,postAdd};

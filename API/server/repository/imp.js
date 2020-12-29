@@ -2,6 +2,8 @@
 const { response } = require('express');
 const puppeteer = require('puppeteer')
 var fs = require("fs");
+const { json } = require('body-parser');
+
 
 //Metodo responsavel por buscar um ususario de acordo com o id
 async function post (imp) {
@@ -138,10 +140,10 @@ async function post (imp) {
         var nome = filtro[0].replace(/width="180">/,"")
         nome = nome.replace(/<\/td>/,"")
         
-        var toners = conteudo.match(/<font id="smsz">\d\d/g)
+        var toners = conteudo.match(/<font id="smsz">\d\d*/g)
         
         for (let index = 0; index < 4; index++) {
-            toners[index] = toners[index].match(/\d\d/g)	
+            toners[index] = toners[index].match(/\d\d*/g)	
         }
         return await JSON.stringify({
             "imp":{
@@ -203,12 +205,42 @@ async function post (imp) {
 
     
 }
-
+// busca as impressoras cadastradas
 async function getIMPs() {
-    //var jsonData = await fs.readFileSync(__dirname+"/imps.json", "utf8");
-    var impressoras =[{"id":"0","modelo":"c3010","ip":"192.168.31.122","tipo":"color"},{"id":"1","modelo":"c3010","ip":"192.168.31.187","tipo":"color"},{"id":"2","modelo":"c3010","ip":"192.168.31.158","tipo":"color"},{"id":"3","modelo":"c911","ip":"192.168.31.118","tipo":"color"},{"id":"4","modelo":"m404","ip":"192.168.31.125","tipo":"pb"},{"id":"5","modelo":"e50145","ip":"192.168.31.228","tipo":"pb"},{"id":"6","modelo":"e52645","ip":"192.168.31.168","tipo":"pb"}]
-    
-    return await JSON.stringify(impressoras)
+    var jsonData = await fs.readFileSync(__dirname+"/imps.json","utf-8");
+    return await jsonData
 }
+
+// adiciona noca impressora
+async function postAdd(imp) {
+    var impressoras = []
+    var maiorID = 0
+    jsonData = await fs.readFileSync(__dirname+"/imps.json","utf-8");
+    arr = jsonData.replace(/\[/,"")
+    arr = arr.replace(/\]/,"")
+    arr = arr.replace(/},/g,"}&&")
+    arr =arr.split("&&")
+    for (let i = 0; i < arr.length; i++) {
+        const imp = arr[i];
+        impressoras.push(JSON.parse(imp))
+    }
+    //maior id
+    for (let i = 0; i < impressoras.length; i++) {
+        const id = impressoras[i].id;
+        if(id > maiorID){
+            maiorID = parseInt(id)
+        }
+    }
+    maiorID = maiorID+1
+    imp.id = maiorID.toString()
+    impressoras.push(imp)
+    fs.writeFileSync(__dirname+"/imps.json",JSON.stringify(impressoras))
+    
+    //var jsonData = await fs.readFileSync(__dirname+"/imps.json","utf-8");*/
+    return await imp
+}
+
+
+
 //exportar todos os modulos para poderem ser usados em outros arquivos
-module.exports = {post,getIMPs};
+module.exports = {post,getIMPs,postAdd};
