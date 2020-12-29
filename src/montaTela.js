@@ -1,4 +1,4 @@
-export {Atualiza,novocard};
+export {Atualiza,novocard,erroMsg};
 
 function Atualiza(id,impressora,tipo){
     //divCard
@@ -144,6 +144,31 @@ function novocard(id){
     spanElement.appendChild(carregandoText)
 	divcardElement.appendChild(spanElement)
 	cardsElement.appendChild(divcardElement)	
+}
+//mensagem de erro
+function erroMsg(id,ip){
+    //limpa Card
+    var divcardElement = document.getElementById(id)
+	divcardElement.innerHTML='';
+
+    //textoErro
+	var spanerroElement = document.createElement('span')
+	spanerroElement.setAttribute('class','spnLoad')
+    var erroText = document.createTextNode("Erro ao obter dados")
+    
+    //textoIP
+	var spanipElement = document.createElement('span')
+	spanipElement.setAttribute('class','spnLoad')
+    var ipText = document.createTextNode("IP: "+ip)
+    
+    //br element
+	var brElement = document.createElement('br')
+
+    spanipElement.appendChild(ipText)
+    spanerroElement.appendChild(erroText)
+    divcardElement.appendChild(spanerroElement)	
+    divcardElement.appendChild(brElement)	
+    divcardElement.appendChild(spanipElement)
 }
 /*function blur(estado,id){
 	var divcardElement = document.getElementById(id)

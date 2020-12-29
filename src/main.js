@@ -92,8 +92,9 @@ var lecadastradas = function(){
 				//console.log(imp.id,response.data.imp,imp.tipo)
 			})
 			.catch((err) => {
-				console.error("Ocorreu um erro ao obter dados da impressora "+ err);
-				});
+				console.error("Ocorreu um erro ao obter dados da impressora ("+imp.ip+") "+ err);
+				montaTela.erroMsg(imp.id,imp.ip)
+			});
 	});
 }
 
