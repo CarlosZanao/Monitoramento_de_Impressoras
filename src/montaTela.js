@@ -13,6 +13,28 @@ const api = axios.create({
 	}
 	
 }*/
+function animacaoBar(elemento,porcentagem,tipo){
+    if(tipo == "pb"){
+        var height = 0;
+        setInterval(frame, 10);
+        function frame() {
+          if ((height*1.5) <= porcentagem) {
+            height++; 
+            elemento.style.height = height*1.5+"px";
+            elemento.style.marginTop = "-"+height*1.5+"px";
+          }
+        } 
+    }else{
+        var width = 0;
+        setInterval(frame, 7);
+        function frame() {
+          if (width <= porcentagem) {
+            width++; 
+            elemento.style.width = width + '%'; 
+          }
+        }
+    }
+}
 
 function removeIMP(id){
 	api.post("imp/rmimpressora",{"id":id})
@@ -104,15 +126,12 @@ function Atualiza(id,impressora,tipo){
         //black
         var divpogressbarbElement = document.createElement('div')
         divpogressbarbElement.setAttribute('class','pogressbarbunica')
-        divpogressbarbElement.style.height = impressora.black*1.5+"px";
-        divpogressbarbElement.style.marginTop = "-"+impressora.black*1.5+"px";
-        /*if(impressora.black < 30){
-            divpogressbarbElement.style.color = "black";
-        }*/
+        
         var porcentagemb = document.createTextNode(impressora.black+"%")
 
         divpogressbarbElement.appendChild(porcentagemb)
 
+        animacaoBar(divpogressbarbElement,impressora.black,tipo)
         //blackShadow
         var divshadowbElement = document.createElement('div')
         divshadowbElement.setAttribute('class','shadowbunica')
@@ -124,15 +143,11 @@ function Atualiza(id,impressora,tipo){
 	}else{
         //black
         var divpogressbarbElement = document.createElement('div')
-        divpogressbarbElement.setAttribute('class','pogressbarb')
-        divpogressbarbElement.style.width = impressora.black+"%";
-        /*if(impressora.black < 30){
-            divpogressbarbElement.style.color = "black";
-        }*/
+        divpogressbarbElement.setAttribute('class','pogressbarb')   
         var porcentagemb = document.createTextNode(impressora.black+"%")
-
+        
         divpogressbarbElement.appendChild(porcentagemb)
-
+        animacaoBar(divpogressbarbElement,impressora.black,tipo)
         //blackShadow
         var divshadowbElement = document.createElement('div')
         divshadowbElement.setAttribute('class','shadowb')
@@ -140,11 +155,10 @@ function Atualiza(id,impressora,tipo){
         //cyan
         var divpogressbarcElement = document.createElement('div')
         divpogressbarcElement.setAttribute('class','pogressbarc')
-        divpogressbarcElement.style.width = impressora.cyan+"%";
         var porcentagemc = document.createTextNode(impressora.cyan+"%")
 
         divpogressbarcElement.appendChild(porcentagemc)
-        
+        animacaoBar(divpogressbarcElement,impressora.cyan,tipo)
         //cyanShadow
         var divshadowcElement = document.createElement('div')
         divshadowcElement.setAttribute('class','shadowc')
@@ -152,11 +166,10 @@ function Atualiza(id,impressora,tipo){
         //magenta
         var divpogressbarmElement = document.createElement('div')
         divpogressbarmElement.setAttribute('class','pogressbarm')
-        divpogressbarmElement.style.width = impressora.magenta+"%";
         var porcentagemm = document.createTextNode(impressora.magenta+"%")
-        
-
+    
         divpogressbarmElement.appendChild(porcentagemm)
+        animacaoBar(divpogressbarmElement,impressora.magenta,tipo)
         //magentaShadow
         var divshadowmElement = document.createElement('div')
         divshadowmElement.setAttribute('class','shadowm')
@@ -164,15 +177,18 @@ function Atualiza(id,impressora,tipo){
         //yellow
         var divpogressbaryElement = document.createElement('div')
         divpogressbaryElement.setAttribute('class','pogressbary')
-        divpogressbaryElement.style.width = impressora.yellow+"%";
         var porcentagemy = document.createTextNode(impressora.yellow+"%")
 
         divpogressbaryElement.appendChild(porcentagemy)
-
-        //magentaShadow
+        animacaoBar(divpogressbaryElement,impressora.yellow,tipo)
+        //YellowShadow
         var divshadowyElement = document.createElement('div')
         divshadowyElement.setAttribute('class','shadowy')
         
+
+        
+        
+
         //add elementos
         
         divcardElement.appendChild(divshadowbElement)
@@ -183,6 +199,8 @@ function Atualiza(id,impressora,tipo){
         divcardElement.appendChild(divpogressbarmElement)
         divcardElement.appendChild(divshadowyElement)
         divcardElement.appendChild(divpogressbaryElement)
+
+          
     }	
 }
 
@@ -198,6 +216,7 @@ function novocard(id){
 	spanElement.setAttribute('class','spnLoad')
 	var carregandoText = document.createTextNode("Carregando...")
 
+    
     spanElement.appendChild(carregandoText)
 	divcardElement.appendChild(spanElement)
 	cardsElement.appendChild(divcardElement)	
@@ -206,7 +225,7 @@ function novocard(id){
 function erroMsg(id,ip){
     //limpa Card
     var divcardElement = document.getElementById(id)
-	divcardElement.innerHTML='';
+    divcardElement.innerHTML='';
 
     //textoErro
 	var spanerroElement = document.createElement('span')
@@ -221,6 +240,7 @@ function erroMsg(id,ip){
     //br element
 	var brElement = document.createElement('br')
 
+    
     spanipElement.appendChild(ipText)
     spanerroElement.appendChild(erroText)
     divcardElement.appendChild(spanerroElement)	

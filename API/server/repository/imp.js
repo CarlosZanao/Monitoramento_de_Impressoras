@@ -1,209 +1,132 @@
 
 const { response } = require('express');
-const puppeteer = require('puppeteer')
 var fs = require("fs");
 const { json } = require('body-parser');
-
+var snmp = require ("net-snmp");
 
 //Metodo responsavel por buscar um ususario de acordo com o id
+
+async function dadoImpressora(imp){
+    var promiseSmnp = new Promise(function(resolve, reject){
+        var session = snmp.createSession (imp.ip, "public");
+        
+        var dados =[]
+        if(imp.modelo == "m5360"){
+            var oids = ["1.3.6.1.2.1.1.5.0","1.3.6.1.2.1.1.6.0","1.3.6.1.2.1.43.11.1.1.8.1.1","1.3.6.1.2.1.43.11.1.1.9.1.1"];
+        }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
+            var oids = ["1.3.6.1.2.1.1.5.0","1.3.6.1.2.1.43.5.1.1.4.1","1.3.6.1.2.1.43.11.1.1.8.1.1","1.3.6.1.2.1.43.11.1.1.9.1.1"];
+        }else if(imp.modelo == "m404" || imp.modelo == "m428"){
+            var oids = ["1.3.6.1.2.1.1.5.0","1.3.6.1.2.1.43.11.1.1.8.1.1","1.3.6.1.2.1.43.11.1.1.9.1.1"];
+        }else if(imp.modelo == "c3010"){
+            var oids = ["1.3.6.1.2.1.1.5.0","1.3.6.1.2.1.1.6.0","1.3.6.1.2.1.43.11.1.1.8.1.4","1.3.6.1.2.1.43.11.1.1.9.1.4","1.3.6.1.2.1.43.11.1.1.8.1.1","1.3.6.1.2.1.43.11.1.1.9.1.1","1.3.6.1.2.1.43.11.1.1.8.1.2","1.3.6.1.2.1.43.11.1.1.9.1.2","1.3.6.1.2.1.43.11.1.1.8.1.3","1.3.6.1.2.1.43.11.1.1.9.1.3"];
+        }else if(imp.modelo == "c911"){
+            var oids = ["1.3.6.1.2.1.1.5.0","1.3.6.1.2.1.1.6.0","1.3.6.1.2.1.43.11.1.1.9.1.1","1.3.6.1.2.1.43.11.1.1.9.1.2","1.3.6.1.2.1.43.11.1.1.9.1.3","1.3.6.1.2.1.43.11.1.1.9.1.4"]
+        }
+        session.get (oids, function (error, varbinds) {
+            if (error) {
+                reject (error);
+            } else {
+                for (var i = 0; i < varbinds.length; i++)
+                    if (snmp.isVarbindError (varbinds[i])){
+                        reject (snmp.varbindError (varbinds[i]))
+                    }else{
+                        dados.push(varbinds[i].value)
+                    }
+            }
+            session.close ();
+        if(dados[0] == null){
+            reject (JSON.stringify({
+                statusCode: 505,
+                msg: 'Erro: impressora não esta respondendo'
+                }))
+        }else{
+            if(imp.modelo == "m5360" || imp.modelo == "e50145" || imp.modelo == "e52645"){
+                    //regra de 3
+                    var resultado = ((dados[3] * 100) / dados[2])
+                    dados[2] = resultado
+                    dados[0] = dados[0].toString()
+                    dados[1] = dados[1].toString()
+                    
+                    dados.splice(3,1)
+
+                    resolve (JSON.stringify({
+                        "imp":{
+                            "local":dados[1],
+                            "nome":dados[0],
+                            "ip":imp.ip,
+                            "black":dados[2],
+                        }
+                    }))
+            }else if(imp.modelo == "m404" || imp.modelo == "m428"){
+                //regra de 3
+                var resultado = ((dados[2] * 100) / dados[1])
+                dados[1] = resultado
+                dados[0] = dados[0].toString()
+
+                dados.splice(2,1)
+                
+                resolve (JSON.stringify({
+                    "imp":{
+                        "local":"Local",
+                        "nome":dados[0],
+                        "ip":imp.ip,
+                        "black":dados[1],
+                    }
+                    }))
+            }else if(imp.modelo == "c3010"){
+                //regra de 3 preto
+                var resultadopreto = ((dados[3] * 100) / dados[2])
+                //regra de 3 cino
+                var resultadociano = ((dados[5] * 100) / dados[4])
+                //regra de 3 magenta
+                var resultadomagenta = ((dados[7] * 100) / dados[6])
+                //regra de 3 yellow
+                var resultadoyellow = ((dados[9] * 100) / dados[8])
+                dados[2] = resultadopreto
+                dados[3] = resultadociano
+                dados[4] = resultadomagenta
+                dados[5] = resultadoyellow
+                dados[0] = dados[0].toString()
+                dados[1] = dados[1].toString()
+                
+                
+                resolve (JSON.stringify({
+                    "imp":{
+                        "local":dados[1],
+                        "nome":dados[0],
+                        "ip":imp.ip,
+                        "black":dados[2],
+                        "cyan":dados[3],
+                        "magenta":dados[4],
+                        "yellow":dados[5],
+                    }
+                }))
+            }else if(imp.modelo == "c911"){
+                    dados[0] = dados[0].toString()
+                    dados[1] = dados[1].toString()
+                    resolve (JSON.stringify({
+                        "imp":{
+                            "local":dados[1],
+                            "nome":dados[0],
+                            "ip":imp.ip,
+                            "black":dados[2],
+                            "cyan":dados[3],
+                            "magenta":dados[4],
+                            "yellow":dados[5],
+                        }
+                    }))  
+                }       
+        }  
+        });
+    })
+    return await promiseSmnp
+
+} 
+
 async function post (imp) {
-    const browser = await puppeteer.launch({
-        ignoreHTTPSErrors: true,
-        headless:true,
-        args: [
-            '--ignore-certificate-errors',
-            '--no-sandbox', 
-            '--disable-setuid-sandbox',   
-        ],
-        slowMo:200
-    });
-    const page = await browser.newPage();
-    if(imp.modelo == "c3010"){
-        try {
-            await page.goto('http://'+imp.ip+'/sws/app/information/home/home.json',{timeout: 30000}, (err, data) => {
-                // Mistaken assumption: throwing here...
-                if (err) {
-                throw err;
-                }
-            });
-            } catch (err) {
-            // This will not catch the throw!
-            await browser.close()
-            }            
-    }else if(imp.modelo == "c911"){    
-        try {
-            await page.goto('http://'+imp.ip+'/status.htm',{timeout: 30000}, (err, data) => {
-                // Mistaken assumption: throwing here...
-                if (err) {
-                throw err;
-                }
-            });
-        } catch (err) {
-        // This will not catch the throw!
-        await browser.close()
-        
-        }
-        
-    }else if(imp.modelo == "m404"){
-
-        try {
-            await page.goto('http://'+imp.ip+'/DevMgmt/ConsumableConfigDyn.xml',{timeout: 30000}, (err, data) => {
-                // Mistaken assumption: throwing here...
-                if (err) {
-                throw err;
-                }
-            });
-        } catch (err) {
-        // This will not catch the throw!
-        await browser.close()
-        
-        }
-        
-        const page2 = await browser.newPage();
-        
-        try {
-            await page2.goto('http://'+imp.ip+'/IoMgmt/IoConfig.xml',{timeout: 30000}, (err, data) => {
-                // Mistaken assumption: throwing here...
-                if (err) {
-                throw err;
-                }
-            });
-        } catch (err) {
-        // This will not catch the throw!
-        await browser.close()
-        
-        }
-        var conteudo2 = await page2.content();
-
-
-    }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
-        
-        try {
-            await page.goto('https://'+imp.ip+'/hp/device/DeviceStatus/Index',{timeout: 30000}, (err, data) => {
-                // Mistaken assumption: throwing here...
-                if (err) {
-                throw err;
-                }
-            });
-        } catch (err) {
-        // This will not catch the throw!
-        await browser.close()
-        
-        }
-        
-        const page2 = await browser.newPage();
-        
-        try {
-            await page2.goto('https://'+imp.ip+'/hp/device/DeviceInformation/View',{timeout: 30000}, (err, data) => {
-                // Mistaken assumption: throwing here...
-                if (err) {
-                throw err;
-                }
-            });
-        } catch (err) {
-        // This will not catch the throw!
-        await browser.close()
-        
-        }
-        var conteudo2 = await page2.content();
-    }
-    var conteudo = await page.content();
-    await browser.close()
     
-    if(imp.modelo == "c3010"){
-        conteudo =conteudo.split(",")
-        var local =conteudo[8].replace(/\n.*location:."/g,'')
-        local =local.replace(/"/g,'')
-        var nome =conteudo[6].match(/PRN.../)
-        var ip =conteudo[10].replace(/\n.*ip_addr: "/g,'')
-        ip = ip.replace(/"/g,'')
-        var black =conteudo[18].replace(/\D/gim, '')
-        var cyan =conteudo[22].replace(/\D/gim, '')
-        var magenta =conteudo[26].replace(/\D/gim, '')
-        var yellow =conteudo[30].replace(/\D/gim, '')
+    return await dadoImpressora(imp)
 
-        return await JSON.stringify({
-            "imp":{
-                "local":local,
-                "nome":nome,
-                "ip":ip,
-                "black":black,
-                "cyan":cyan,
-                "magenta":magenta,
-                "yellow":yellow,
-            }
-        })  
-    }else if(imp.modelo == "c911"){
-        var filtro = conteudo.match(/width="180">.*/g)
-        var local = filtro[2].replace(/width="180">/,"")
-        local = local.replace(/<\/td>/,"")
-        var nome = filtro[0].replace(/width="180">/,"")
-        nome = nome.replace(/<\/td>/,"")
-        
-        var toners = conteudo.match(/<font id="smsz">\d\d*/g)
-        
-        for (let index = 0; index < 4; index++) {
-            toners[index] = toners[index].match(/\d\d*/g)	
-        }
-        return await JSON.stringify({
-            "imp":{
-                "local":local,
-                "nome":nome,
-                "ip":imp.ip,
-                "black":toners[3],
-                "cyan":toners[0],
-                "magenta":toners[1],
-                "yellow":toners[2],
-            }
-        })
-    }else if(imp.modelo == "m404"){
-        var porcentagem = conteudo.match(/<dd:ConsumablePercentageLevelRemaining>\d*/g)
-        var porcentagem = porcentagem[0].replace(/<dd:ConsumablePercentageLevelRemaining>/,"")
-        var nome = conteudo2.match(/<dd3:Hostname>.*/g)
-        var nome = nome[0].replace(/<dd3:Hostname>/,"")
-        var nome = nome.replace(/<\/dd3:Hostname>/,"")
-
-        return await JSON.stringify({
-            "imp":{
-                "local":"local",
-                "nome":nome,
-                "ip":imp.ip,
-                "black":porcentagem,
-            }
-        })
-    }else if(imp.modelo == "e50145" || imp.modelo == "e52645"){
-        
-        if (conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d\d*/g) == null) {
-            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">\d\d*/g)
-            var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
-        } else {
-            var porcentagem = conteudo.match(/<span id="SupplyPLR0" class="plr">&lt;\d\d*/g)
-            var porcentagem = porcentagem[0].replace(/<span id="SupplyPLR0" class="plr">/,"")
-        }
-
-        var nome = conteudo.match(/<p class="device-name" id="HomeDeviceName">.*/g)
-        var nome = nome[0].replace(/<p class="device-name" id="HomeDeviceName">/,"")
-        var nome = nome.replace(/<\/p>/,"")
-        var local = conteudo2.match(/<p id="DeviceLocation">.*/g)
-        var local = local[0].replace(/<p id="DeviceLocation">/,"")
-        var local = local.replace(/<\/p>/,"")
-        
-        return await JSON.stringify({
-            "imp":{
-                "local":local,
-                "nome":nome,
-                "ip":imp.ip,
-                "black":porcentagem,
-            }
-        })
-    }
-        return {
-            statusCode: 505,
-            msg: 'Erro: impressora não esta respondendo'
-        }
-    
-
-    
 }
 // busca as impressoras cadastradas
 async function getIMPs() {

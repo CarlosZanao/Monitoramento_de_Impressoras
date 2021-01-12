@@ -3,10 +3,10 @@ import * as montaTela from '/src/montaTela.js'
 
 //axios
 const api = axios.create({
-	baseURL: "http://192.168.26.192:3303/api",
+	baseURL: "http://192.168.26.192:3303/api/",
   });
 
-var molelos = ['C3010','C911',"M404","E50145","E52645"];
+var molelos = ['C3010','C911',"M404","M428","E50145","E52645","M5360",];
 var visivel = false
 
 
