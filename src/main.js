@@ -50,12 +50,20 @@ function adicionaIMP(){
 				modelo = "m404"
 				tipo = "pb"
 				break;
+			case "M428":
+				modelo = "m428"
+				tipo = "pb"
+				break;
 			case "E50145":
 				modelo = "e50145"
 				tipo = "pb"
 				break;
 			case "E52645":
 				modelo = "e52645"
+				tipo = "pb"
+				break;
+			case "M5360":
+				modelo = "m5360"
 				tipo = "pb"
 				break;
 			default:
