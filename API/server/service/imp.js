@@ -1,8 +1,6 @@
 //Aqui estamos importando o repositorio de usuarios
 const imp = require('../repository/imp');
 
-
-
 async function post (imd) {
     //Aqui estamos buscando ima impressora
     var im = await imp.post(imd);
@@ -18,6 +16,7 @@ async function post (imd) {
     //Aqui retornamos o usuario encontrado no banco 
     return im;
 }
+
 async function getIMPs () {
     //Aqui estamos buscando ima impressora
     var im = await imp.getIMPs();
