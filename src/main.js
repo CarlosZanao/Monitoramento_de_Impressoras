@@ -76,6 +76,7 @@ function adicionaIMP(){
 		})
 		.catch((err) => {
 			console.error("Não foi possivel cadastrar a impressora")
+			alert("Não foi possivel cadastrar a impressora ("+err+")")
 		});
 	})
 }

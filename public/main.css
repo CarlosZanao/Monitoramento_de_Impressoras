@@ -245,7 +245,6 @@ body{
     border-radius: 5px;
     background-color: rgb(184, 180, 180);
     box-shadow: 1px 1px 2px rgb(109, 108, 108), 0 0 25px whitesmoke, 0 0 5px white;
-    overflow: hidden;
 }
 .pogressbarc{
     margin-top: -20px;
@@ -254,7 +253,6 @@ body{
     border-radius: 5px;
     background-color: cyan;
     text-align: center;
-     
 }
 .shadowc{
     margin-top: 20px;

@@ -15,10 +15,10 @@ const api = axios.create({
 }*/
 function animacaoBar(elemento,porcentagem,tipo){
     if(tipo == "pb"){
-        var height = 0;
+        var height = 4;
         setInterval(frame, 10);
         function frame() {
-          if ((height*1.5) <= porcentagem) {
+          if ((height*1.5) <= (porcentagem*1.5)) {
             height++; 
             elemento.style.height = height*1.5+"px";
             elemento.style.marginTop = "-"+height*1.5+"px";
@@ -46,7 +46,8 @@ function removeIMP(id){
 		cardsElement.removeChild(cardElement)
 	})
 	.catch((err) => {
-		console.error("Não foi possivel remover a impressora")
+        console.error("Não foi possivel remover a impressora")
+        alert("Não foi possivel remover a impressora ("+err+")")
 	});
 
 }
