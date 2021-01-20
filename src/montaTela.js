@@ -15,20 +15,24 @@ const api = axios.create({
 }*/
 function animacaoBar(elemento,porcentagem,tipo){
     if(tipo == "pb"){
-        var height = 4;
+        var height = 7;
         setInterval(frame, 10);
         function frame() {
-          if ((height*1.5) <= (porcentagem*1.5)) {
-            height++; 
-            elemento.style.height = height*1.5+"px";
-            elemento.style.marginTop = "-"+height*1.5+"px";
-          }
+            if(porcentagem <= 0){
+               elemento.style.backgroundColor= rgb(184, 180, 180);
+               elemento.style.color = black;
+            }
+            if ((height*1.5) < (porcentagem*1.5)) {
+                height++; 
+                elemento.style.height = height*1.5+"px";
+                elemento.style.marginTop = "-"+height*1.5+"px";
+            }
         } 
     }else{
         var width = 0;
         setInterval(frame, 7);
         function frame() {
-          if (width <= porcentagem) {
+          if (width < porcentagem) {
             width++; 
             elemento.style.width = width + '%'; 
           }

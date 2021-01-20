@@ -13,31 +13,27 @@ var visivel = false
 function selecionaImp(){
 	
     molelos.forEach(modelo => {
-		var inputModelo = document.getElementById('inputmodelo')
-		var dropdownC = document.getElementById("imps")
-
-		var aElemente =document.createElement('a')
-		aElemente.addEventListener("click",function(event) {
-			inputModelo.setAttribute("value",modelo)
-		})
-		aElemente.style.float = "left"
-
-		var modeloText = document.createTextNode(modelo)
-
-		aElemente.appendChild(modeloText)
-		dropdownC.appendChild(aElemente)
+		var inputModelo = document.getElementById('inputmodelo');
+		
+		let option = document.createElement('option');
+		option.setAttribute("value",modelo)
+		
+		let modeloText = document.createTextNode(modelo);
+		
+		option.appendChild(modeloText);
+		inputModelo.appendChild(option);
 	});
 }
-
 
 function adicionaIMP(){
 	var inputModelo = document.getElementById('inputmodelo')
 	var inputIP = document.getElementById("inputIP")
 	var btnAddimp = document.getElementById("btnAddimp")
+	let modeloSelecionado = inputModelo.options[inputModelo.selectedIndex].value;
 	var tipo = "pb"
 	var modelo = null
 	btnAddimp.addEventListener("click",function(event){
-		switch (inputModelo.getAttribute("value")) {
+		switch (modeloSelecionado) {
 			case "C3010":
 				modelo = "c3010"
 				tipo = "color"

@@ -40,12 +40,24 @@ async function dadoImpressora(imp){
                 msg: 'Erro: impressora não esta respondendo'
                 }))
         }else{
+            
             if(imp.modelo == "m5360" || imp.modelo == "e50145" || imp.modelo == "e52645"){
+                    if(dados[1].toString() == ""){
+                        dados[1] = "Setor Não Definido"
+                    }else{
+                        dados[1] = dados[1].toString()
+                    }
+                    if(dados[0].toString() == ""){
+                        dados[0] = "Nome Não Definido"
+                    }else{
+                        dados[0] = dados[0].toString()
+                    }
+
                     //regra de 3
                     var resultado = ((dados[3] * 100) / dados[2])
                     dados[2] = resultado
-                    dados[0] = dados[0].toString()
-                    dados[1] = dados[1].toString()
+                    
+                    
                     
                     dados.splice(3,1)
 
