@@ -6,14 +6,14 @@ const api = axios.create({
 	baseURL: "http://192.168.26.192:3303/api/",
   });
 
-var molelos = ['C3010','C911',"M404","M428","E50145","E52645","M5360",];
+const molelos = ['C3010','C911',"M404","M428","E50145","E52645","M5360",];
 var visivel = false
 
 
 function selecionaImp(){
 	
     molelos.forEach(modelo => {
-		var inputModelo = document.getElementById('inputmodelo');
+		let inputModelo = document.getElementById('inputmodelo');
 		
 		let option = document.createElement('option');
 		option.setAttribute("value",modelo)
@@ -26,13 +26,13 @@ function selecionaImp(){
 }
 
 function adicionaIMP(){
-	var inputModelo = document.getElementById('inputmodelo')
-	var inputIP = document.getElementById("inputIP")
-	var btnAddimp = document.getElementById("btnAddimp")
-	let modeloSelecionado = inputModelo.options[inputModelo.selectedIndex].value;
-	var tipo = "pb"
-	var modelo = null
+	let inputModelo = document.getElementById('inputmodelo')
+	let inputIP = document.getElementById("inputIP")
+	let btnAddimp = document.getElementById("btnAddimp")
+	let tipo = "pb"
+	let modelo = null
 	btnAddimp.addEventListener("click",function(event){
+		let modeloSelecionado = inputModelo.options[inputModelo.selectedIndex].value;
 		switch (modeloSelecionado) {
 			case "C3010":
 				modelo = "c3010"
@@ -78,7 +78,7 @@ function adicionaIMP(){
 }
 
 function btnCadastro(){
-	var addBtn = document.getElementById("addbtn")
+	let addBtn = document.getElementById("addbtn")
 	addBtn.addEventListener("click",function(event){
 		mostraForm(visivel)
 		if(visivel == false){
@@ -90,7 +90,7 @@ function btnCadastro(){
 }
 
 function mostraForm(valor){
-	var addIp = document.getElementById("ipAdd")
+	let addIp = document.getElementById("ipAdd")
 	if(valor == false){
 		addIp.style.display = "block"
 	}else{

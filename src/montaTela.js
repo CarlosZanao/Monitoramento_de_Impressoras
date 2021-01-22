@@ -15,12 +15,11 @@ const api = axios.create({
 }*/
 function animacaoBar(elemento,porcentagem,tipo){
     if(tipo == "pb"){
-        var height = 7;
+        var height = 10;
         setInterval(frame, 10);
         function frame() {
-            if(porcentagem <= 0){
-               elemento.style.backgroundColor= rgb(184, 180, 180);
-               elemento.style.color = black;
+            if(porcentagem <= 10){
+               elemento.style.backgroundImage = `linear-gradient(rgb(184, 180, 180) ${15-(porcentagem*1.5)}px, black)`;
             }
             if ((height*1.5) < (porcentagem*1.5)) {
                 height++; 
